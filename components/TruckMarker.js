@@ -1,30 +1,50 @@
-import React from 'react'
-import {Image, Text} from 'react-native'
-import {MapView} from 'expo'
+import React from "react";
+import { Button, Image, Text, TouchableOpacity, View } from "react-native";
+import { MapView } from "expo";
+import R from "ramda";
+import TruckModal from "../components/TruckModal";
 
-let icons = {
-  truck: require("../assets/images/truck-icon-png-10.jpg"),
-  favorite: require("../assets/images/heartblue.png")
-}
+let icons = R.map(source => <Image source={source} />, {
+  markerDefault: require("../assets/images/truck-all.png"),
+  markerFavorite: require("../assets/images/truck-fav.png")
+});
 
-export default TruckMarker = props => {
-  let {truck} = props
-    , [longitude, latitude] = truck.location.coordinates
+let iconz = R.map(
+  source => <Image source={source} style={{ width: 30, height: 30 }} />,
+  {
+    addFavorite: require("../assets/images/heart-gray.png"),
+    removeFavorite: require("../assets/images/heart-red.png")
+  }
+);
+
+export default (TruckMarker = props => {
+  let { truck, isFavorite, toggleFavorite } = props,
+    [longitude, latitude] = truck.location.coordinates;
 
   return (
     <MapView.Marker
-      coordinate={{longitude, latitude}}
+      coordinate={{ longitude, latitude }}
       title={truck.title}
-      onPress={props.onPress}
+      tracksInfoWindowChanges={true}
     >
-      <Image
-        source={props.isFavorite ? icons.favorite : icons.truck}
-        style={{width: props.width || 40, height: props.height || 40}}
-      />
-      <Text>{truck.title}</Text>
-      {/* <MapView.Callout>
-        <Text>Test</Text>
-      </MapView.Callout> */}
+      {icons[isFavorite ? "markerFavorite" : "markerDefault"]}
+      <MapView.Callout
+        tooltip={true}
+        onPress={toggleFavorite}
+        style={{
+          padding: 10,
+          borderWidth: 0.1,
+          width: truck.title.length * 8 + 50,
+          backgroundColor: "#ffde59",
+          flexDirection: "row",
+          borderRadius: 11,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Text style={{ paddingRight: 13 }}>{truck.title}</Text>
+        {iconz[isFavorite ? "removeFavorite" : "addFavorite"]}
+      </MapView.Callout>
     </MapView.Marker>
-  )
-}
+  );
+});

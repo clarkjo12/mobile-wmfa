@@ -2,8 +2,8 @@ import React from "react";
 import {
   AsyncStorage,
   Button,
+  ScrollView,
   Slider,
-  StyleSheet,
   Switch,
   Text,
   View
@@ -12,28 +12,7 @@ import R from "ramda";
 import { connect } from "react-redux";
 import { set, update } from "../actions";
 
-const styles = StyleSheet.create({
-  bigBlue: {
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: 20,
-    alignItems: "center"
-  },
-  MommaDiv: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: 30,
-    borderColor: "black",
-    borderWidth: 1,
-    padding: 50
-  },
-  switch: {
-    backgroundColor: "yellow"
-  }
-});
+import TruckModal from "../components/TruckModal";
 
 class SettingsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -42,12 +21,10 @@ class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <View style={{ height: 50 }} />
-
-        <Text style={styles.bigBlue}>Receive Notifications:</Text>
+      <View style={{ flex: 1, padding: 20 }}>
+        <TruckModal />
+        <Text>Receive Notifications:</Text>
         <Switch
-          style={styles.switch}
           value={this.props.receiveNotifications}
           onValueChange={switchState =>
             this.props.update([
@@ -56,7 +33,7 @@ class SettingsScreen extends React.Component {
             ])
           }
         />
-        <Text>Notification Distance:</Text>
+        <Text>Notification Distance: </Text>
         <Slider
           minimumValue={1}
           maximumValue={10000}
@@ -67,16 +44,16 @@ class SettingsScreen extends React.Component {
               () => n
             ])
           }
-          // onSlidingComplete={n => this.props.set({user: R.assocPath(['local', 'preferences', 'notificationDistance'], n, this.props.state.user)})}
-        />
-        <Button
-          title="Clear Storage"
-          onPress={() =>
-            AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove)
+          onSlidingComplete={n =>
+            this.props.set({
+              user: R.assocPath(
+                ["local", "preferences", "notificationDistance"],
+                n,
+                this.props.state.user
+              )
+            })
           }
         />
-        <Text>State: {JSON.stringify(this.props.state)}</Text>
-
         <Button
           style={{
             width: 50,
@@ -87,6 +64,16 @@ class SettingsScreen extends React.Component {
           title="Sign out"
           onPress={() => this.props.navigation.navigate("Landing")}
         />
+        <Text>State:</Text>
+        <ScrollView style={{ flex: 1 }}>
+          <Text>{JSON.stringify(this.props.state, null, 2)}</Text>
+        </ScrollView>
+        <Button
+          title="Clear Storage"
+          onPress={() =>
+            AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove)
+          }
+        />
       </View>
     );
   }
@@ -95,10 +82,7 @@ class SettingsScreen extends React.Component {
 export default connect(
   state => ({
     state,
-    ...R.pick(
-      ["receiveNotifications", "notificationDistance"],
-      R.path(["local", "preferences"], state.user)
-    )
+    ...R.pick(["notificationDistance"], R.path(["local"], state.user))
   }),
   { set, update }
 )(SettingsScreen);

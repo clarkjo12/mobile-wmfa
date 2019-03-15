@@ -8,9 +8,12 @@ import {
   Switch,
   Text,
   TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
   View
 } from "react-native";
 
+import { connect } from "react-redux";
 import Logo from "../assets/images/Logo.png";
 import LogoText from "../assets/images/LogoTextUser.png";
 
@@ -40,7 +43,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    color: "blue",
     fontWeight: "bold",
     fontSize: 30,
     borderColor: "black",
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     padding: 50
   },
   subButton: {
-    backgroundColor: "gold",
+    backgroundColor: "tomato",
     borderRadius: 3,
     marginTop: 15
   },
@@ -59,8 +61,7 @@ const styles = StyleSheet.create({
 
 class Landing extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Landing",
-    background: "#ffbd59"
+    header: null
   });
 
   render() {
@@ -73,11 +74,15 @@ class Landing extends React.Component {
           backgroundColor: "#ffbd59"
         }}
       >
-        <Image
-          style={{ width: 150, height: 150, marginTop: 40, marginBottom: 8 }}
-          source={Logo}
-          alt="nope"
-        />
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Truck")}
+        >
+          <Image
+            style={{ width: 150, height: 150, marginTop: 40, marginBottom: 8 }}
+            source={Logo}
+            alt="nope"
+          />
+        </TouchableOpacity>
         <Image
           style={{ width: "80%", height: 80, marginBottom: 40 }}
           source={LogoText}
@@ -90,7 +95,7 @@ class Landing extends React.Component {
         <View style={styles.subButton}>
           <Button
             title="Submit"
-            onPress={() => this.props.navigation.navigate("HomeScreen")}
+            onPress={() => this.props.navigation.navigate("Home")}
           />
         </View>
       </View>
@@ -98,4 +103,4 @@ class Landing extends React.Component {
   }
 }
 
-export default Landing;
+export default connect()(Landing);
