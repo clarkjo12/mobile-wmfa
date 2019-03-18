@@ -21,10 +21,26 @@ class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, padding: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          padding: 20,
+          backgroundColor: "#ffbd59"
+        }}
+      >
         <TruckModal />
-        <Text>Receive Notifications:</Text>
+        <Text
+          style={{
+            alignSelf: "center"
+          }}
+        >
+          Receive Notifications:
+        </Text>
         <Switch
+          style={{
+            alignSelf: "center",
+            marginTop: 15
+          }}
           value={this.props.receiveNotifications}
           onValueChange={switchState =>
             this.props.update([
@@ -33,8 +49,20 @@ class SettingsScreen extends React.Component {
             ])
           }
         />
-        <Text>Notification Distance: </Text>
+        <Text
+          style={{
+            alignSelf: "center",
+            paddingTop: 30
+          }}
+        >
+          Notification Distance:
+          {""}
+        </Text>
         <Slider
+          style={{
+            width: "70%",
+            alignSelf: "center"
+          }}
           minimumValue={1}
           maximumValue={10000}
           value={this.props.notificationDistance}
