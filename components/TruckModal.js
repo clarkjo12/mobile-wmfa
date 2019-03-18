@@ -21,7 +21,7 @@ export default class TruckModal extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View>
         <TouchableOpacity onPress={this._toggleModal}>
           <Image style={{ height: 25, width: 25 }} source={Mega} />
         </TouchableOpacity>
@@ -137,6 +137,8 @@ export default class TruckModal extends Component {
                   borderColor: "tomato",
                   borderBottomWidth: 1,
                   borderRadius: "50%",
+                  width: "30%",
+                  alignSelf: "center",
                   backgroundColor: "tomato",
                   alignItems: "center"
                 }}

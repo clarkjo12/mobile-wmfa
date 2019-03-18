@@ -115,7 +115,7 @@ class HomeScreen extends React.Component {
           <TruckModal close={() => this.setState({ showModal: false })} />
         )}
       </View>
-      <MapButtons />
+      {/* <MapButtons /> */}
     </View>
   );
 }

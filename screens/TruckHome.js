@@ -15,6 +15,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
+import { underline, bold } from "ansi-colors";
 
 let logo = require("../assets/images/BlueLogo.png");
 
@@ -34,13 +35,41 @@ class TruckHome extends React.Component {
       <View
         style={{
           width: Dimensions.get("window").width,
-          height: 15,
-          backgroundColor: "#38b6ff"
+          paddingTop: 30,
+          backgroundColor: "#38b6ff",
+          alignSelf: "center"
         }}
-      />
+      >
+        <Image
+          source={logo}
+          style={{
+            width: 300,
+            height: 70,
+            paddingTop: 15,
+            backgroundColor: "#38b6ff",
+            alignSelf: "center"
+          }}
+        />
+      </View>
 
       <View>
-        <Switch />
+        <Text
+          style={{
+            paddingBottom: 30,
+            backgroundColor: "#38b6ff",
+            alignSelf: "center",
+            textDecorationLine: "underline",
+            fontSize: 40
+          }}
+        >
+          Activate Truck
+        </Text>
+        <Switch
+          style={{
+            backgroundColor: "#38b6ff",
+            alignSelf: "center"
+          }}
+        />
       </View>
 
       <Button

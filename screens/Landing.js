@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecorationLine: "underline",
     fontSize: 20,
+    paddingTop: 40,
     paddingBottom: 8
   },
   inputs: {
@@ -50,9 +51,9 @@ const styles = StyleSheet.create({
     padding: 50
   },
   subButton: {
-    backgroundColor: "tomato",
+    backgroundColor: "palevioletred",
     borderRadius: 3,
-    marginTop: 15
+    marginTop: 35
   },
   switch: {
     backgroundColor: "yellow"
@@ -78,7 +79,7 @@ class Landing extends React.Component {
           onPress={() => this.props.navigation.navigate("Truck")}
         >
           <Image
-            style={{ width: 150, height: 150, marginTop: 40, marginBottom: 8 }}
+            style={{ width: 150, height: 150, marginTop: 60, marginBottom: 8 }}
             source={Logo}
             alt="nope"
           />
@@ -94,6 +95,7 @@ class Landing extends React.Component {
         <Text>New User?</Text>
         <View style={styles.subButton}>
           <Button
+            style={{ color: "#ff0000" }}
             title="Submit"
             onPress={() => this.props.navigation.navigate("Home")}
           />

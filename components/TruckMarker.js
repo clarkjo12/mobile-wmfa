@@ -30,7 +30,8 @@ export default (TruckMarker = props => {
       {icons[isFavorite ? "markerFavorite" : "markerDefault"]}
       <MapView.Callout
         tooltip={true}
-        onPress={toggleFavorite}
+        // onPress={toggleFavorite}
+
         style={{
           padding: 10,
           borderWidth: 0.1,
@@ -43,7 +44,10 @@ export default (TruckMarker = props => {
         }}
       >
         <Text style={{ paddingRight: 13 }}>{truck.title}</Text>
-        {iconz[isFavorite ? "removeFavorite" : "addFavorite"]}
+        <TouchableOpacity>
+          <TruckModal onPress={props._toggleModal} />
+        </TouchableOpacity>
+        {/* {iconz[isFavorite ? "removeFavorite" : "addFavorite"]} */}
       </MapView.Callout>
     </MapView.Marker>
   );
