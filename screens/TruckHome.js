@@ -55,14 +55,57 @@ class TruckHome extends React.Component {
       <View>
         <Text
           style={{
-            paddingBottom: 30,
+            paddingBottom: 20,
             backgroundColor: "#38b6ff",
             alignSelf: "center",
             textDecorationLine: "underline",
-            fontSize: 40
+            fontSize: 20
           }}
         >
-          Activate Truck
+          Truck Status
+        </Text>
+        <View
+          style={{
+            paddingBottom: 20,
+            backgroundColor: "yellow",
+            alignSelf: "center",
+            width: 70,
+            height: 70,
+            borderRadius: 35
+          }}
+        />
+      </View>
+      <View>
+        <Text
+          style={{
+            paddingBottom: 20,
+            backgroundColor: "#38b6ff",
+            alignSelf: "center",
+            textDecorationLine: "underline",
+            fontSize: 35
+          }}
+        >
+          Driving?
+        </Text>
+        <Switch
+          style={{
+            backgroundColor: "#38b6ff",
+            alignSelf: "center"
+          }}
+        />
+      </View>
+
+      <View>
+        <Text
+          style={{
+            paddingBottom: 20,
+            backgroundColor: "#38b6ff",
+            alignSelf: "center",
+            textDecorationLine: "underline",
+            fontSize: 35
+          }}
+        >
+          Serving!
         </Text>
         <Switch
           style={{
