@@ -10,7 +10,7 @@ import TruckMarker from "../components/TruckMarker";
 import locationInUseGranted from "../util/locationInUseGranted";
 import { toggleFavorite, set, update } from "../actions";
 
-let invisible = require("../assets/images/20x20-00000000.png");
+let invisible = require("../assets/images/truck-all.png");
 
 let toLatLng = ([lon, lat]) => ({
   latitude: Math.max(-90, Math.min(90, lat)),
@@ -49,7 +49,6 @@ class NotificationCircle extends React.Component {
   state = {
     notificationDistance: this.props.notificationDistance
   };
-
   render = () => (
     <MapView.Polygon
       coordinates={toBoundary(this.props.region)}
@@ -65,13 +64,29 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
-      region: props.region
+      region: props.region,
+      nearbyTrucks: []
     };
+    this.updateTrucksArray = this.updateTrucksArray.bind(this);
 
     this.circleThis = null;
   }
 
+  updateTrucksArray = () => {
+    fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/", {method: "GET", headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }}).then((response) => response.json())
+    .then((responseJson) => {
+      let truckDBArray = responseJson;
+      this.setState({
+        nearbyTrucks: truckDBArray
+      });
+    })
+    //alert();
+  }
   render() {
+    this.updateTrucksArray();
     let notificationCircle = this.state.region &&
       this.props.locationEnabled &&
       this.props.location &&
@@ -96,22 +111,36 @@ class Map extends React.Component {
         () => dragDistance(e)
       ]);
 
-    let markers =
-      this.props.locationEnabled &&
-      this.props.location &&
-      this.props.notificationDistance &&
-      toCircle(this.props.location.coords, this.props.notificationDistance)
-        .slice(1)
-        .map(coordinate => (
-          <MapView.Marker
-            {...{ coordinate, onDrag, onDragEnd }}
-            draggable={true}
-            key={JSON.stringify(coordinate)}
-          >
-            <Image source={invisible} />
-          </MapView.Marker>
-        ));
+    // let markers =
+    //   this.props.locationEnabled &&
+    //   this.props.location &&
+    //   this.props.notificationDistance &&
+    //   toCircle(this.props.location.coords, this.props.notificationDistance)
+    //     .slice(1)
+    //     .map(coordinate => (
+    //       <MapView.Marker
+    //         {...{ coordinate, onDrag, onDragEnd }}
+    //         draggable={true}
+    //         key={JSON.stringify(coordinate)}
+    //       >
+    //         <Image source={invisible} />
+    //       </MapView.Marker>
+    //     ));
 
+    let markers = this.state.nearbyTrucks.map((truck, key) => (
+      <MapView.Marker
+           coordinate={{
+             latitude:truck.location.coordinates[0],
+             longitude:truck.location.coordinates[1]
+           }}
+           title="a"
+           description="a"
+         >   
+        <Image source={invisible} />
+        </MapView.Marker>
+
+           ))     
+ 
     return (
       <MapView
         provider={"google"}
@@ -123,8 +152,8 @@ class Map extends React.Component {
         onRegionChange={region => this.setState({ region })}
         onRegionChangeComplete={region => this.props.set({ region })}
       >
-        {markers}
-        {Object.entries(this.props.trucks)
+    {markers}
+    {Object.entries(this.props.trucks)
           .filter(([id, truck]) => truck.status === "open")
           .map(([id, truck]) => (
             <TruckMarker

@@ -64,7 +64,6 @@ class Landing extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     header: null
   });
-
   render() {
     return (
       <View
@@ -76,7 +75,7 @@ class Landing extends React.Component {
         }}
       >
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("TruckLand")}
+          onPress={() => this.props.navigation.navigate("Truck")}
         >
           <Image
             style={{ width: 150, height: 150, marginTop: 60, marginBottom: 8 }}
@@ -95,11 +94,10 @@ class Landing extends React.Component {
         <Text>New User?</Text>
         <View style={styles.subButton}>
           <Button
+            style={{ color: "#ff0000" }}
             title="Submit"
             onPress={() => this.props.navigation.navigate("Home")}
-          >
-            <Text style={{ color: "#ff0000" }}>Submit</Text>
-          </Button>
+          />
         </View>
       </View>
     );

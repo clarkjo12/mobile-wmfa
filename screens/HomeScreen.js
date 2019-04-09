@@ -67,8 +67,8 @@ class HomeScreen extends React.Component {
             flex: 0.1,
             justifyContent: "center",
             paddingRight: 20,
-            marginLeft: -10,
-            marginBottom: -8,
+            marginLeft: 0,
+            marginBottom: 0,
             backgroundColor: "#38b6ff"
           }}
         >
@@ -82,7 +82,8 @@ class HomeScreen extends React.Component {
       </View>
 
       <View style={{ flex: 1 }}>
-        {this.props.showMap ? (
+      <Map/>
+        {/* {this.props.showMap ? (
           <Map showModal={() => this.setState({ showModal: true })} />
         ) : (
           <View />
@@ -113,7 +114,7 @@ class HomeScreen extends React.Component {
         )}
         {this.state.showModal && (
           <TruckModal close={() => this.setState({ showModal: false })} />
-        )}
+        )} */}
       </View>
       {/* <MapButtons /> */}
     </View>
