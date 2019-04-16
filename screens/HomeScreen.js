@@ -43,12 +43,12 @@ class HomeScreen extends React.Component {
           backgroundColor: "#38b6ff"
         }}
       /> */}
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row",  }}>
         <View
           style={{
             flex: 0.9,
             padding: 20,
-            paddingTop: 23,
+            paddingTop: 32,
             paddingBottom: 12,
             backgroundColor: "#38b6ff"
           }}
@@ -116,7 +116,7 @@ class HomeScreen extends React.Component {
           <TruckModal close={() => this.setState({ showModal: false })} />
         )} */}
       </View>
-      {/* <MapButtons /> */}
+      <MapButtons />
     </View>
   );
 }

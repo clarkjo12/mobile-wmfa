@@ -1,20 +1,13 @@
 import React, {Component} from "react";
 
 import {
-  AppState,
-  AsyncStorage,
   Button,
   Dimensions,
   Image,
   TextInput,
-  Modal,
-  TouchableHighlight,
-  TouchableOpacity,
-  View, Text, Switch, StyleSheet
+  View, Text, Switch,
+  ScrollView
 } from "react-native";
-
-import { connect } from "react-redux";
-import { underline, bold } from "ansi-colors";
 
 let logo = require("../assets/images/BlueLogo.png");
 
@@ -25,9 +18,10 @@ export default class TruckHome extends Component {
   state = {
     laPos: 'unknown',
     loPos: 'unknown',
-    backcolor: 'red',
+    backcolor: 'pink',
     firstswitchval:false,
     secondswitchval:false,
+    thirdswitchval:false,
     isTrucker: false,
     password: '',
     counter: null
@@ -60,12 +54,14 @@ export default class TruckHome extends Component {
   // componentDidMount = () => {
     
   // }
-  updateForDriving = () => {
+  updateForDriving(){
     // alert(this.state.laPos);
     //alert(this.state.laPos+"/"+this.state.loPos);
     // setInterval( () => {
-      this.interval = setInterval(() => {
-        this.setState({counter: this.state.counter + 1});
+
+    // changes by Rahul
+      // this.interval = setInterval(() => {
+        // this.setState({counter: this.state.counter + 1});
         console.log(this.state.counter);
         fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cab58e2c38f510034704e16", {method: "PUT", headers: {
         'Accept': 'application/json',
@@ -84,11 +80,12 @@ export default class TruckHome extends Component {
           "summary": "Tacos, Tacos, Who wants tacos?"
         })})
         .then((response) => {
-          console.log(response);
+          console.log("result:--", response);
         }) 
-    }, 5000);
+    // changes by Rahul
+    // }, 5000);
   }
-  updateForServing = () => {
+  updateForServing (){
       fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cab58e2c38f510034704e16", {method: "PUT", headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -109,32 +106,59 @@ export default class TruckHome extends Component {
         console.log(response);
       }) 
   }
+
+  updateForDone () {
+    fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cab58e2c38f510034704e16", {method: "PUT", headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    },
+    body:JSON.stringify({
+      "username": "kongkong",
+      "password": "kingking",
+      "title": "kingking's Kitchen",
+      "status": "closed",
+      "favorites": 0,
+      "location": {
+        "coordinates": [Number(this.state.laPos), Number(this.state.loPos)]
+      },
+      "picture": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiv06j50p3gAhWwZd8KHbuyCssQjRx6BAgBEAU&url=http%3A%2F%2Fthemetapicture.com%2Fi-hate-tacos%2F&psig=AOvVaw1sMD6HB7A3PpdLH25DoR7c&ust=1549217445029750",
+      "summary": "Tacos, Tacos, Who wants tacos?"
+    })})
+    .then((response) => {
+      console.log(response);
+    }) 
+}
+
   handlebackcolor1 = () => {
     if(this.state.backcolor == "yellow")
-      this.setState({backcolor:'red'});
+      this.setState({backcolor:'pink', firstswitchval:!this.state.firstswitchval});
     else
-      this.setState({backcolor:'yellow'});
-    this.setState({firstswitchval:!this.state.firstswitchval});
-    this.setState({secondswitchval:false});
-
-
+      this.setState({backcolor:'yellow', firstswitchval:!this.state.firstswitchval,
+      secondswitchval:false, thirdswitchval:false});
   }
   handlebackcolor2 = () => {
     if(this.state.backcolor == "green")
-      this.setState({backcolor:'red'});
+      this.setState({backcolor:'pink', secondswitchval:!this.state.secondswitchval});
     else
-      this.setState({backcolor:'green'});
-    this.setState({secondswitchval:!this.state.secondswitchval});
-    this.setState({firstswitchval:false});
-
+      this.setState({backcolor:'green', secondswitchval:!this.state.secondswitchval,
+      firstswitchval:false, thirdswitchval:false});
   }
+
+  handlebackcolor3 = () => {
+    if(this.state.backcolor == "red")
+      this.setState({backcolor:'pink', thirdswitchval:!this.state.thirdswitchval});
+    else
+      this.setState({backcolor:'red', thirdswitchval:!this.state.thirdswitchval,
+      firstswitchval:false, secondswitchval:false});
+  }
+
   submit = () => {
     console.log(this.state.password);
     if(this.state.password != "sd")
     {
       if(this.state.backcolor == 'red')
       {
-        alert("map off");
+        this.updateForDone();
       }
       else if(this.state.backcolor == 'yellow')
       {
@@ -151,6 +175,10 @@ export default class TruckHome extends Component {
     }
   }
   render = () => (
+    <ScrollView  style={{
+      flex: 1,
+      backgroundColor: "#38b6ff",
+      }}> 
     <View
       style={{
         flex: 1,
@@ -181,6 +209,7 @@ export default class TruckHome extends Component {
       <View>
         <Text
           style={{
+            marginTop:32,
             paddingBottom: 20,
             backgroundColor: "#38b6ff",
             alignSelf: "center",
@@ -246,7 +275,30 @@ export default class TruckHome extends Component {
 
         />
       </View>
+
       <View>
+        <Text
+          style={{
+            paddingBottom: 20,
+            backgroundColor: "#38b6ff",
+            alignSelf: "center",
+            textDecorationLine: "underline",
+            fontSize: 35
+          }}
+        >
+          Done!
+        </Text>
+        <Switch
+          style={{
+            backgroundColor: "#38b6ff",
+            alignSelf: "center",
+          }}
+          onValueChange={this.handlebackcolor3}
+          value = {this.state.thirdswitchval}
+
+        />
+      </View>
+      <View style={{marginTop:48}}>
         <TextInput style={{
             borderColor: "gray",
             borderWidth: 1,
@@ -277,12 +329,14 @@ export default class TruckHome extends Component {
           width: 51,
           justifyContent: "center",
           borderColor: "black",
-          borderWidth: 2
+          borderWidth: 2,
+          marginTop:48,
         }}
         title="Sign out"
         onPress={() => this.props.navigation.navigate("Landing")}
       />
     </View>
+    </ScrollView>
   );
 }
 

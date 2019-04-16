@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 150,
     height: 55,
-    marginTop: -55
+    marginTop:(Dimensions.get('window').height) - 75,
+    position:'absolute'
   },
   favs: {
     backgroundColor: "tomato",
