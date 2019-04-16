@@ -19,6 +19,10 @@ class SettingsScreen extends React.Component {
     title: "Settings"
   });
 
+  state={
+    receiveNotifications:false
+  }
+
   render() {
     return (
       <View
@@ -41,12 +45,13 @@ class SettingsScreen extends React.Component {
             alignSelf: "center",
             marginTop: 15
           }}
-          value={this.props.receiveNotifications}
+          value={this.state.receiveNotifications}
           onValueChange={switchState =>
-            this.props.update([
-              ["user", "local", "preferences", "receiveNotifications"],
-              () => switchState
-            ])
+            // this.props.update([
+            //   ["user", "local", "preferences", "receiveNotifications"],
+            //   () => switchState
+            // ])
+            this.setState({receiveNotifications: switchState})
           }
         />
         <Text

@@ -136,7 +136,7 @@ export default class TruckModal extends Component {
                 style={{
                   borderColor: "tomato",
                   borderBottomWidth: 1,
-                  borderRadius: "50%",
+                  borderRadius: 50,
                   width: "30%",
                   alignSelf: "center",
                   backgroundColor: "tomato",

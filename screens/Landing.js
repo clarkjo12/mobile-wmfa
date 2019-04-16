@@ -2,15 +2,12 @@ import React from "react";
 import {
   Button,
   Image,
-  KeyboardAvoidingView,
-  Slider,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
-  View
+  View,
+  AsyncStorage
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -36,9 +33,9 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 3,
-    padding: 5,
-    margin: 7,
-    width: "55%"
+    padding: 4,
+    margin: 8,
+    width: "56%",
   },
   MommaDiv: {
     display: "flex",
@@ -53,7 +50,7 @@ const styles = StyleSheet.create({
   subButton: {
     backgroundColor: "palevioletred",
     borderRadius: 3,
-    marginTop: 35
+    marginTop: 26
   },
   switch: {
     backgroundColor: "yellow"
@@ -64,6 +61,110 @@ class Landing extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     header: null
   });
+
+  constructor(props){
+    super(props)
+    this.state={ username:"", password:"", confirmPassword:"", loginText:"New User?", newUser:false }
+  }
+
+  onSubmitPressed(){
+    const {username, password, confirmPassword, loginText} = this.state;
+    if(loginText === "New User?"){      
+      if(username.length === 0){
+        console.log('Enter Username')
+      }else if(password.length === 0){
+        console.log('Enter Password')
+      }else{
+        this.callLoginApi(username, password)
+      }
+    }else{
+      if(username.length === 0){
+        console.log('Enter Username')
+      }else if(password.length === 0){
+        console.log('Enter Password')
+      }else if(confirmPassword.length === 0){
+        console.log('Enter Confirm Password')
+      }else if(password !== confirmPassword){
+        console.log('Password does not match!')
+      }else{
+        const location = {"coordinates": [-21.805149, -49.089977]}
+        this.callSignUpApi(username, password, location)
+      }
+    }
+  }
+
+  callLoginApi(username, password){
+    fetch("https://evening-brushlands-53491.herokuapp.com/api/eaters/login", {method: "POST", headers: {
+        'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "username": username,
+          "password": password
+        })})
+        .then((response) => {
+          console.log("result:--", response.status);
+          if(response.status === 200){
+            this.moveToNextScreen(response);
+          }
+        }) 
+  }
+
+  callSignUpApi(username, password, location){
+    fetch("https://evening-brushlands-53491.herokuapp.com/api/eaters/signup", {method: "POST", headers: {
+        'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "username": username,
+          "password": password,
+          "location": location
+        })})
+        .then((response) => {
+          console.log("result:--", response);
+          if(response.status === 200){
+            this.moveToNextScreen(response);
+          }
+        });
+    }
+
+    moveToNextScreen(response){
+      AsyncStorage.setItem('user_id', (JSON.stringify(JSON.parse(response._bodyInit)._id)), () => {
+        AsyncStorage.setItem('user_name', (JSON.stringify(JSON.parse(response._bodyInit).username)), () => {
+          this.props.navigation.navigate("Home");
+        });
+      });
+    }
+
+  onUsernameChanges(text){
+    this.setState({username: text})
+  }
+
+  onPasswordChanges(text){
+    this.setState({password: text})
+  }
+
+  onConfirmPasswordChanges(text){
+    this.setState({confirmPassword: text})
+  }
+
+  renderConfirmPassword(){
+    if(this.state.newUser){
+      return <TextInput style={styles.inputs} 
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          value={this.state.confirmPassword}
+          onChangeText={this.onConfirmPasswordChanges.bind(this)}
+        />;
+    }
+  }
+
+  onLoginTextPressed(){
+    if(this.state.newUser === false){
+      this.setState({loginText:"Already User?", newUser: true})
+    }else{
+      this.setState({loginText:"New User?", newUser: false})
+    }
+  }
+
   render() {
     return (
       <View
@@ -75,30 +176,50 @@ class Landing extends React.Component {
         }}
       >
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Truck")}
-        >
+          onPress={() => this.props.navigation.navigate("Code")}>
           <Image
             style={{ width: 150, height: 150, marginTop: 60, marginBottom: 8 }}
             source={Logo}
             alt="nope"
           />
         </TouchableOpacity>
+
         <Image
           style={{ width: "80%", height: 80, marginBottom: 40 }}
           source={LogoText}
           alt="nope"
         />
+
         <Text style={styles.bigBlue}>Login Below!</Text>
-        <TextInput style={styles.inputs} placeholder="Username" />
-        <TextInput style={styles.inputs} placeholder="Password" />
-        <Text>New User?</Text>
+
+        <TextInput style={styles.inputs} 
+          placeholder="Username"
+          value={this.state.username}
+          onChangeText={this.onUsernameChanges.bind(this)} 
+        />
+
+        <TextInput style={styles.inputs} 
+          placeholder="Password"
+          secureTextEntry={true}
+          value={this.state.password}
+          onChangeText={this.onPasswordChanges.bind(this)}
+        />
+
+        {this.renderConfirmPassword()}
+
+        <TouchableOpacity
+          onPress={() => this.onLoginTextPressed()}>
+        <Text>{this.state.loginText}</Text>
+        </TouchableOpacity>
+
         <View style={styles.subButton}>
           <Button
             style={{ color: "#ff0000" }}
             title="Submit"
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={() => this.onSubmitPressed()}
           />
         </View>
+
       </View>
     );
   }

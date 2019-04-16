@@ -72,6 +72,10 @@ class Map extends React.Component {
     this.circleThis = null;
   }
 
+  componentDidMount(){
+    this.updateTrucksArray();
+  }
+
   updateTrucksArray = () => {
     fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/", {method: "GET", headers: {
       'Accept': 'application/json',
@@ -86,7 +90,6 @@ class Map extends React.Component {
     //alert();
   }
   render() {
-    this.updateTrucksArray();
     let notificationCircle = this.state.region &&
       this.props.locationEnabled &&
       this.props.location &&
