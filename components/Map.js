@@ -89,7 +89,28 @@ class Map extends React.Component {
     })
     //alert();
   }
+
+        
+  renderMarker(){
+    if(this.state.nearbyTrucks.length >0){
+      this.state.nearbyTrucks.map((truck, key) => {
+        if(truck.location !== undefined){
+        return <MapView.Marker
+            coordinate={{
+              latitude:truck.location.coordinates[0],
+              longitude:truck.location.coordinates[1]
+            }}
+            title="a"
+            description="a"
+          >   
+        <Image source={invisible} />
+        </MapView.Marker>;
+        }
+      })     
+  }}
+
   render() {
+    
     let notificationCircle = this.state.region &&
       this.props.locationEnabled &&
       this.props.location &&
@@ -129,21 +150,28 @@ class Map extends React.Component {
     //         <Image source={invisible} />
     //       </MapView.Marker>
     //     ));
+    
+    var nearbyTrucks= [];
+    this.state.nearbyTrucks.map((truck, key) => {
+      if(truck.location !== undefined){
+        nearbyTrucks.push(truck)
+      }
+    })     
 
-    let markers = this.state.nearbyTrucks.map((truck, key) => (
-      <MapView.Marker
-           coordinate={{
-             latitude:truck.location.coordinates[0],
-             longitude:truck.location.coordinates[1]
-           }}
-           title="a"
-           description="a"
-         >   
+    let markers = nearbyTrucks.map((truck, key) => (
+        <MapView.Marker
+            coordinate={{
+              latitude:truck.location.coordinates[0],
+              longitude:truck.location.coordinates[1]
+            }}
+            title={truck.title}
+            description={truck.summary}
+          >   
         <Image source={invisible} />
         </MapView.Marker>
 
-           ))     
- 
+      ))     
+   
     return (
       <MapView
         provider={"google"}
@@ -156,7 +184,7 @@ class Map extends React.Component {
         onRegionChangeComplete={region => this.props.set({ region })}
       >
     {markers}
-    {Object.entries(this.props.trucks)
+    {Object.entries(nearbyTrucks)
           .filter(([id, truck]) => truck.status === "open")
           .map(([id, truck]) => (
             <TruckMarker
