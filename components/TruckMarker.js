@@ -35,7 +35,7 @@ export default (TruckMarker = props => {
         style={{
           padding: 10,
           borderWidth: 0.1,
-          width: truck.title.length * 8 + 50,
+          width: 50,
           backgroundColor: "#ffde59",
           flexDirection: "row",
           borderRadius: 11,

@@ -9,7 +9,7 @@ import api from "../api"
 let flipCoords = truck => ({
   ...truck,
   location: {
-    coordinates: R.reverse(truck.location.coordinates)
+    // coordinates: R.reverse(truck.location.coordinates)
   }
 })
 
