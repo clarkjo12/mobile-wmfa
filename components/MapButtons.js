@@ -1,6 +1,6 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { StyleSheet, View, Dimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
   momma: {

@@ -154,9 +154,10 @@ class Map extends React.Component {
     var nearbyTrucks= [];
     this.state.nearbyTrucks.map((truck, key) => {
       if(truck.location !== undefined){
-        nearbyTrucks.push(truck)
+        if(truck.location.coordinates[0] !== null)
+          nearbyTrucks.push(truck)
       }
-    })     
+    })
 
     let markers = nearbyTrucks.map((truck, key) => (
         <MapView.Marker

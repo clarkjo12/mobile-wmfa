@@ -9,13 +9,13 @@ let icons = R.map(source => <Image source={source} />, {
   markerFavorite: require("../assets/images/truck-fav.png")
 });
 
-let iconz = R.map(
-  source => <Image source={source} style={{ width: 30, height: 30 }} />,
-  {
-    addFavorite: require("../assets/images/heart-gray.png"),
-    removeFavorite: require("../assets/images/heart-red.png")
-  }
-);
+// let iconz = R.map(
+//   source => <Image source={source} style={{ width: 30, height: 30 }} />,
+//   {
+//     addFavorite: require("../assets/images/heart-gray.png"),
+//     removeFavorite: require("../assets/images/heart-red.png")
+//   }
+// );
 
 export default (TruckMarker = props => {
   let { truck, isFavorite, toggleFavorite } = props,

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity, View, Image } from "react-native";
 import Modal from "react-native-modal";
 import Mega from "../assets/images/mega.png";
-import watch from "../assets/images/watch.png";
 import testTruck from "../assets/images/truck-icon-png-10.jpg";
 import navImg from "../assets/images/navimg.png";
 import heartRed from "../assets/images/heart-red.png";

@@ -2,13 +2,9 @@ import React from "react";
 import {
   Button,
   Image,
-  KeyboardAvoidingView,
-  Slider,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
   View
 } from "react-native";
@@ -67,10 +63,34 @@ class OTPScreen extends React.Component {
     header: null
   });
 
+  state={code:""}
+
   onLoginTextPressed(){
     this.props.navigation.goBack();
   }
 
+  callLoginUsingCode(){
+    if(this.state.code.length === 0){
+
+    }else{
+    fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/login", {method: "POST", headers: {
+        'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "code": this.state.code,
+        })})
+        .then((response) => {
+          console.log("result:--", response);
+          if(response.status === 200){
+            this.props.navigation.navigate("Truck")
+          }
+        });
+    }
+}
+
+  onCodeChanges(text){
+    this.setState({code:text})
+  }
 
   render() {
     return (
@@ -98,7 +118,10 @@ class OTPScreen extends React.Component {
 
         <TextInput style = { styles.inputs } 
             secureTextEntry = {true}
-            placeholder = "******" />
+            placeholder = "******"
+            value={this.state.code}
+            onChangeText={this.onCodeChanges.bind(this)}
+           />
         <TouchableOpacity
           onPress={() => this.onLoginTextPressed()}>
           <Text>New User?</Text>
@@ -108,7 +131,7 @@ class OTPScreen extends React.Component {
           <Button
             style={{ color: "#ff0000" }}
             title="Submit"
-            onPress={() => this.props.navigation.navigate("Truck")}
+            onPress={() => this.callLoginUsingCode()}
           />
         </View>
       </View>

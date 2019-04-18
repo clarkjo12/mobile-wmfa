@@ -1,14 +1,9 @@
 import React from "react";
 
 import {
-  AppState,
   AsyncStorage,
   Button,
-  Dimensions,
   Image,
-  Modal,
-  Text,
-  TouchableHighlight,
   View
 } from "react-native";
 

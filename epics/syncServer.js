@@ -1,6 +1,6 @@
 import {of, defer, from} from 'rxjs'
-import {catchError, debounceTime, distinctUntilChanged, distinctUntilKeyChanged, filter, map, retry, switchMap, tap, throttleTime} from 'rxjs/operators'
-import {combineEpics, ofType} from 'redux-observable'
+import {catchError, distinctUntilChanged, distinctUntilKeyChanged, filter, map, retry, switchMap, tap, throttleTime} from 'rxjs/operators'
+import {combineEpics} from 'redux-observable'
 import R from 'ramda'
 
 import {set, update} from "../actions"
