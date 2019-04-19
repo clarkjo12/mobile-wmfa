@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 9888,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 811,
+  "expoServerNgrokUrl": "https://si-59v.anonymous.mobile-wmfa.exp.direct",
+  "packagerNgrokUrl": "https://packager.si-59v.anonymous.mobile-wmfa.exp.direct",
+  "ngrokPid": 830,
   "webpackServerPort": null
 }
