@@ -5,7 +5,8 @@ import {
   Dimensions,
   Image,
   View, Text, StyleSheet,
-  ScrollView, TouchableOpacity
+  ScrollView, TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 
 let logo = require("../assets/images/BlueLogo.png");
@@ -23,7 +24,8 @@ export default class TruckHome extends Component {
     thirdswitchval:false,
     isTrucker: false,
     password: '',
-    counter: null
+    counter: null,
+    trucker_id:''
  }
 
  componentDidMount = () => {
@@ -39,7 +41,12 @@ export default class TruckHome extends Component {
        (error) => alert(error.message),
        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-  
+
+    AsyncStorage.getItem('trucker_id', (err, result) => {
+      console.log("trucker_id", JSON.stringify(result));
+      this.setState({trucker_id: result.replace(/\"/g,"") });
+    });
+    
  }
   // findTrucker = () => {
   //   fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5c6ded53fb6fc01c4ce8fc5c", {method: "GET", headers: {
@@ -61,21 +68,15 @@ export default class TruckHome extends Component {
       this.interval = setInterval(() => {
         this.setState({counter: this.state.counter + 1});
         console.log(this.state.counter);
-        fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cb6c5028012800034b965e6", {method: "PUT", headers: {
+        fetch(`https://evening-brushlands-53491.herokuapp.com/api/truckers/${this.state.trucker_id}`, {method: "PUT", headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         },
         body:JSON.stringify({
-          "username": "kongkong"+this.state.counter,
-          "password": "kingking",
-          "title": "kingking's Kitchen",
-          "status": "open",
-          "favorites": 0,
+          "status": "driving",
           "location": {
             "coordinates": [Number(this.state.laPos), Number(this.state.loPos)]
-          },
-          "picture": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiv06j50p3gAhWwZd8KHbuyCssQjRx6BAgBEAU&url=http%3A%2F%2Fthemetapicture.com%2Fi-hate-tacos%2F&psig=AOvVaw1sMD6HB7A3PpdLH25DoR7c&ust=1549217445029750",
-          "summary": "Tacos, Tacos, Who wants tacos?"
+          }
         })})
         .then((response) => {
           console.log("result:--", response);
@@ -83,21 +84,15 @@ export default class TruckHome extends Component {
     }, 5000);
   }
   updateForServing (){
-      fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cb6c5028012800034b965e6", {method: "PUT", headers: {
+      fetch(`https://evening-brushlands-53491.herokuapp.com/api/truckers/${this.state.trucker_id}`, {method: "PUT", headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       },
       body:JSON.stringify({
-        "username": "kongkong",
-        "password": "kingking",
-        "title": "kingking's Kitchen",
-        "status": "open",
-        "favorites": 0,
+        "status": "serving",
         "location": {
           "coordinates": [Number(this.state.laPos), Number(this.state.loPos)]
-        },
-        "picture": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiv06j50p3gAhWwZd8KHbuyCssQjRx6BAgBEAU&url=http%3A%2F%2Fthemetapicture.com%2Fi-hate-tacos%2F&psig=AOvVaw1sMD6HB7A3PpdLH25DoR7c&ust=1549217445029750",
-        "summary": "Tacos, Tacos, Who wants tacos?"
+        }
       })})
       .then((response) => {
         console.log(response);
@@ -105,21 +100,15 @@ export default class TruckHome extends Component {
   }
 
   updateForDone () {
-    fetch("https://evening-brushlands-53491.herokuapp.com/api/truckers/5cb6c5028012800034b965e6", {method: "PUT", headers: {
+    fetch(`https://evening-brushlands-53491.herokuapp.com/api/truckers/${this.state.trucker_id}`, {method: "PUT", headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     },
     body:JSON.stringify({
-      "username": "kongkong",
-      "password": "kingking",
-      "title": "kingking's Kitchen",
       "status": "closed",
-      "favorites": 0,
       "location": {
         "coordinates": [Number(this.state.laPos), Number(this.state.loPos)]
-      },
-      "picture": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiv06j50p3gAhWwZd8KHbuyCssQjRx6BAgBEAU&url=http%3A%2F%2Fthemetapicture.com%2Fi-hate-tacos%2F&psig=AOvVaw1sMD6HB7A3PpdLH25DoR7c&ust=1549217445029750",
-      "summary": "Tacos, Tacos, Who wants tacos?"
+      }
     })})
     .then((response) => {
       console.log(response);

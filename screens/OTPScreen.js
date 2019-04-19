@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  AsyncStorage
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -82,11 +83,17 @@ class OTPScreen extends React.Component {
         .then((response) => {
           console.log("result:--", response);
           if(response.status === 200){
-            this.props.navigation.navigate("Truck")
+            this.moveToNextScreen(response)
           }
         });
     }
 }
+
+  moveToNextScreen(response){
+    AsyncStorage.setItem('trucker_id', (JSON.stringify(JSON.parse(response._bodyInit).id)), () => {
+        this.props.navigation.navigate("Truck");
+    });
+  }
 
   onCodeChanges(text){
     this.setState({code:text})

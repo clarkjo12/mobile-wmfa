@@ -9,14 +9,10 @@ import {
 
 import { connect } from "react-redux";
 
-import Frisbee from "frisbee";
-import * as R from "ramda";
-
 import Map from "../components/Map";
 import locationInUseGranted from "../util/locationInUseGranted";
 import { set } from "../actions";
 import MapButtons from "../components/MapButtons";
-import TruckModal from "../components/TruckModal";
 
 let logo = require("../assets/images/BlueLogo.png");
 
